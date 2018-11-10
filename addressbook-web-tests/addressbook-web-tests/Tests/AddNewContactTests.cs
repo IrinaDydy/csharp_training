@@ -14,8 +14,14 @@ namespace addressbook_web_tests
             ContactData contact = new ContactData("Иван", "Иванов");
             contact.Email = "ivanov.ivan@gmail.com";
             app.Contacts.Create(contact);
+        }
 
+        [Test]
+        public void AddEmptyContactTest()
+        {
+            ContactData contact = new ContactData("", "");
 
+            app.Contacts.Create(contact);
         }
 
 

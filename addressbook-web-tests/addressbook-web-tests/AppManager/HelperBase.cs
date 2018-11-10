@@ -25,5 +25,41 @@ namespace addressbook_web_tests
                 return false;
             }
         }
+
+        protected bool IsAlertPresent()
+        {
+            try
+            {
+                manager.Driver.SwitchTo().Alert();
+                return true;
+            }
+            catch (NoAlertPresentException)
+            {
+                return false;
+            }
+        }
+
+        protected string CloseAlertAndGetItsText(bool acceptNextAlert=true)
+        {
+            try
+            {
+                IAlert alert = manager.Driver.SwitchTo().Alert();
+                string alertText = alert.Text;
+                if (acceptNextAlert)
+                {
+                    alert.Accept();
+                }
+                else
+                {
+                    alert.Dismiss();
+                }
+                return alertText;
+            }
+            finally
+            {
+                acceptNextAlert = true;
+            }
+        }
+
     }
 }

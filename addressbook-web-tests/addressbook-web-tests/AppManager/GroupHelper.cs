@@ -28,6 +28,18 @@ namespace addressbook_web_tests
             return this;
         }
 
+        public GroupHelper Update(int index, GroupData group)
+        {
+            manager.Navigator.GoToGroupsPage();
+            SelectGroup(index);
+            EditGroup();
+            FillGroupForm(group);
+            SubmitEditGroup();
+            manager.Navigator.ReturnToGroupsPage();
+            manager.Auth.Logout();
+            return this;
+        }
+
         public GroupHelper SubmitGroupCreation()
         {
             manager.Driver.FindElement(By.Name("submit")).Click();
@@ -65,6 +77,18 @@ namespace addressbook_web_tests
         public GroupHelper RemoveGroup()
         {
             manager.Driver.FindElement(By.Name("delete")).Click();
+            return this;
+        }
+
+        public GroupHelper EditGroup()
+        {
+            manager.Driver.FindElement(By.Name("edit")).Click();
+            return this;
+        }
+
+        public GroupHelper SubmitEditGroup()
+        {
+            manager.Driver.FindElement(By.Name("update")).Click();
             return this;
         }
     }

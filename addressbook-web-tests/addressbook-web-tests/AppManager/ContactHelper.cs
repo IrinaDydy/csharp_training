@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
 namespace addressbook_web_tests
@@ -16,13 +18,63 @@ namespace addressbook_web_tests
         public ContactHelper Create(ContactData contact)
         {
             InitContactCreation();
-            FillContactCreationForm(contact);
+            FillContactForm(contact);
             SubmitContactCreation();
             manager.Navigator.GoToHomePage();
             manager.Auth.Logout();
             return this;
         }
-        public ContactHelper FillContactCreationForm(ContactData contact)
+
+
+        public ContactHelper RemoveOneContact(int index)
+        {
+            SelectContact(index);
+            RemoveContact();
+            AcceptNextAllert(true, "^Delete 1 addresses[\\s\\S]$");
+            manager.Auth.Logout();
+            return this;
+        }
+
+        public ContactHelper Update(int index, ContactData contact)
+        {
+            InitEditContact(index);
+            FillContactForm(contact);
+            UpdateContact();
+            manager.Auth.Logout();
+            return this;
+        }
+
+        public ContactHelper InitEditContact(int index)
+        {
+            manager.Driver.FindElement(By.XPath("(//img[@alt='Edit'])["+ index + "]")).Click();
+
+            return this;
+        }
+
+        public ContactHelper UpdateContact()
+        {
+            manager.Driver.FindElement(By.Name("update")).Click();
+            return this;
+        }
+
+        public ContactHelper SelectContact(int index)
+        {
+            manager.Driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr["+index+"]/td/input")).Click();
+            return this;
+        }
+        public ContactHelper AcceptNextAllert(bool acceptNextAlert, string allertMessage)//"^Delete 1 addresses[\\s\\S]$"
+        {
+            Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(acceptNextAlert), allertMessage));
+            return this;
+        }
+        public ContactHelper RemoveContact()
+        {
+            manager.Driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            return this;
+        }
+
+
+        public ContactHelper FillContactForm(ContactData contact)
         {
             manager.Driver.FindElement(By.Name("firstname")).Click();
             manager.Driver.FindElement(By.Name("firstname")).Click();

@@ -19,6 +19,14 @@ namespace addressbook_web_tests
 
         }
 
+        [Test]
+        public void CreateEmptyGroupTest()
+        {
+            GroupData group = new GroupData("");
+            app.Groups.Create(group);
+
+        }
+
     }
 
 
