@@ -9,18 +9,40 @@ namespace addressbook_web_tests
 
         public void Login(AccountData account)
         {
-            manager.Driver.FindElement(By.Name("user")).Clear();
-            manager.Driver.FindElement(By.Name("user")).SendKeys(account.Username);
-            manager.Driver.FindElement(By.Name("pass")).Click();
-            manager.Driver.FindElement(By.Name("pass")).Clear();
-            manager.Driver.FindElement(By.Name("pass")).SendKeys(account.Password);
+            if (IsLoggedIn())
+            {
+                if (IsLoggedIn(account))
+                {
+                    return;
+                }
+                Logout();
+            }
+            Type(By.Name("user"), account.Username);
+            Type(By.Name("pass"), account.Password);
             manager.Driver.FindElement(By.XPath("//input[@value='Login']")).Click();
         }
 
 
         public void Logout()
         {
-            manager.Driver.FindElement(By.LinkText("Logout")).Click();
+            if (IsLoggedIn())
+            {
+                manager.Driver.FindElement(By.LinkText("Logout")).Click();
+            }
         }
+
+        public bool IsLoggedIn()
+        {
+            return IsElementPresent(By.Name("logout"));
+        }
+
+        public bool IsLoggedIn(AccountData account)
+        {
+            return IsElementPresent(By.Name("logout")) &&
+                   manager.Driver.FindElement(By.Name("logout")).FindElement(By.TagName("b")).Text ==
+                   "(" + account.Username + ")";
+
+        }
+
     }
 }

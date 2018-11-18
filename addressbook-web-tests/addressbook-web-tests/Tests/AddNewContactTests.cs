@@ -5,7 +5,7 @@ namespace addressbook_web_tests
     /// Summary description for AddNewContactTests
     /// </summary>
     [TestFixture]
-    public class AddNewContactTests:TestBase
+    public class AddNewContactTests: AuthTestBase
     {
 
         [Test]

@@ -70,6 +70,7 @@
     <Compile Include="AppManager\ApplicationManager.cs" />
     <Compile Include="Models\ContactData.cs" />
     <Compile Include="AppManager\ContactHelper.cs" />
+    <Compile Include="Tests\AuthTestBase.cs" />
     <Compile Include="Tests\CreateNewGroupTests.cs" />
     <Compile Include="Models\GroupData.cs" />
     <Compile Include="AppManager\GroupHelper.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="AppManager\NavigationHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\DeleteContactTests.cs" />
+    <Compile Include="Tests\LoginTests.cs" />
     <Compile Include="Tests\UpdateContactTests.cs" />
     <Compile Include="Tests\UpdateGroupTests.cs" />
     <Compile Include="Tests\RemoveGroupTests.cs" />

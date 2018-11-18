@@ -6,7 +6,7 @@ namespace addressbook_web_tests
     /// Summary description for CreateNewGroupTests
     /// </summary>
     [TestFixture]
-    public class CreateNewGroupTests : TestBase
+    public class CreateNewGroupTests : AuthTestBase
     {
 
         [Test]

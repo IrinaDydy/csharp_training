@@ -14,29 +14,28 @@ namespace addressbook_web_tests
             FillGroupForm(group);
             SubmitGroupCreation();
             manager.Navigator.ReturnToGroupsPage();
-            manager.Auth.Logout();
             return this;
         }
 
         public GroupHelper Remove(int index)
         {
             manager.Navigator.GoToGroupsPage();
+            CreateEmptyGroupIfNeeded();
             SelectGroup(index);
             RemoveGroup();
             manager.Navigator.ReturnToGroupsPage();
-            manager.Auth.Logout();
             return this;
         }
 
         public GroupHelper Update(int index, GroupData group)
         {
             manager.Navigator.GoToGroupsPage();
+            CreateEmptyGroupIfNeeded();
             SelectGroup(index);
             EditGroup();
             FillGroupForm(group);
             SubmitEditGroup();
             manager.Navigator.ReturnToGroupsPage();
-            manager.Auth.Logout();
             return this;
         }
 
@@ -48,16 +47,9 @@ namespace addressbook_web_tests
 
         public GroupHelper FillGroupForm(GroupData group)
         {
-            manager.Driver.FindElement(By.Name("group_name")).Click();
-            manager.Driver.FindElement(By.Name("group_name")).Click();
-            manager.Driver.FindElement(By.Name("group_name")).Clear();
-            manager.Driver.FindElement(By.Name("group_name")).SendKeys(group.Name);
-            manager.Driver.FindElement(By.Name("group_header")).Click();
-            manager.Driver.FindElement(By.Name("group_header")).Clear();
-            manager.Driver.FindElement(By.Name("group_header")).SendKeys(group.Header);
-            manager.Driver.FindElement(By.Name("group_footer")).Click();
-            manager.Driver.FindElement(By.Name("group_footer")).Clear();
-            manager.Driver.FindElement(By.Name("group_footer")).SendKeys(group.Footer);
+            Type(By.Name("group_name"), group.Name);
+            Type(By.Name("group_header"), group.Header);
+            Type(By.Name("group_footer"), group.Footer);
             return this;
         }
 
@@ -83,6 +75,16 @@ namespace addressbook_web_tests
         public GroupHelper EditGroup()
         {
             manager.Driver.FindElement(By.Name("edit")).Click();
+            return this;
+        }
+
+
+        public GroupHelper CreateEmptyGroupIfNeeded()
+        {
+            if (!IsElementPresent(By.XPath("//*[@id=\"content\"]/form/span[1]")))
+            {
+                Create(new GroupData(""));
+            }
             return this;
         }
 

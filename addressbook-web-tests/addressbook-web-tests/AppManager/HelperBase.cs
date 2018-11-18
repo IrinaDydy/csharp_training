@@ -61,5 +61,14 @@ namespace addressbook_web_tests
             }
         }
 
+        public void Type(By locator, string text)
+        {
+            if (text != null)
+            {
+                manager.Driver.FindElement(locator).Clear();
+                manager.Driver.FindElement(locator).SendKeys(text);
+            }
+        }
+
     }
 }

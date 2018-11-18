@@ -3,7 +3,7 @@
 namespace addressbook_web_tests.Tests
 {
     [TestFixture]
-    public class UpdateGroupTests:TestBase
+    public class UpdateGroupTests: AuthTestBase
     {
         [Test]
         public void UpdateGroupTest()
