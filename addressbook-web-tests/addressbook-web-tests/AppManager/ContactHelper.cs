@@ -27,7 +27,7 @@ namespace addressbook_web_tests
 
         public ContactHelper RemoveOneContact(int index)
         {
-            CreateEmptyContactIfNeeded();
+            
             SelectContact(index);
             RemoveContact();
             AcceptNextAllert(true, "^Delete 1 addresses[\\s\\S]$");
@@ -36,7 +36,6 @@ namespace addressbook_web_tests
 
         public ContactHelper Update(int index, ContactData contact)
         {
-            CreateEmptyContactIfNeeded();
             InitEditContact(index);
             FillContactForm(contact);
             UpdateContact();
@@ -68,6 +67,7 @@ namespace addressbook_web_tests
             {
                 Create(new ContactData("",""));
             }
+            Assert.IsTrue(IsElementPresent(By.XPath("//*[@id=\"maintable\"]/tbody/tr[2]")));
             return this;
         }
 

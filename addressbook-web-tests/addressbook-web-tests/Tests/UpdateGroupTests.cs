@@ -11,7 +11,7 @@ namespace addressbook_web_tests.Tests
             GroupData group = new GroupData("TestGroup");
             group.Header = "Test group header";
             group.Footer = "Test group footer";
-            app.Groups.Update(1,group);
+            app.Groups.CreateEmptyGroupIfNeeded().Update(1,group);
 
         }
     }

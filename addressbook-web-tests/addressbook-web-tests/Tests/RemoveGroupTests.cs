@@ -8,7 +8,7 @@ namespace addressbook_web_tests
         [Test]
         public void RemoveGroupTest()
         {
-            app.Groups.Remove(1);
+            app.Groups.CreateEmptyGroupIfNeeded().Remove(1);
 
         }
     }

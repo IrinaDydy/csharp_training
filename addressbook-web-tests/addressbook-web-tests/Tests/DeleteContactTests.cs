@@ -9,7 +9,7 @@ namespace addressbook_web_tests.Tests
         [Test]
         public void DeleteContactTest()
         {
-            app.Contacts.RemoveOneContact(2);
+            app.Contacts.CreateEmptyContactIfNeeded().RemoveOneContact(2);
         }
 
     }

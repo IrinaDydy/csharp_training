@@ -1,4 +1,5 @@
-﻿using OpenQA.Selenium;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 
 namespace addressbook_web_tests
 {
@@ -20,7 +21,6 @@ namespace addressbook_web_tests
         public GroupHelper Remove(int index)
         {
             manager.Navigator.GoToGroupsPage();
-            CreateEmptyGroupIfNeeded();
             SelectGroup(index);
             RemoveGroup();
             manager.Navigator.ReturnToGroupsPage();
@@ -30,7 +30,6 @@ namespace addressbook_web_tests
         public GroupHelper Update(int index, GroupData group)
         {
             manager.Navigator.GoToGroupsPage();
-            CreateEmptyGroupIfNeeded();
             SelectGroup(index);
             EditGroup();
             FillGroupForm(group);
@@ -81,10 +80,12 @@ namespace addressbook_web_tests
 
         public GroupHelper CreateEmptyGroupIfNeeded()
         {
+            manager.Navigator.GoToGroupsPage();
             if (!IsElementPresent(By.XPath("//*[@id=\"content\"]/form/span[1]")))
             {
                 Create(new GroupData(""));
             }
+            Assert.IsTrue(IsElementPresent(By.XPath("//*[@id=\"content\"]/form/span[1]")));
             return this;
         }
 

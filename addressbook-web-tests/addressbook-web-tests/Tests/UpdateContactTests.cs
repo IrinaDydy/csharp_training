@@ -15,7 +15,7 @@ namespace addressbook_web_tests.Tests
         {
             ContactData contact = new ContactData("Иван", "Иванов");
             contact.Email = "ivanov.ivan@gmail.com";
-            app.Contacts.Update(1,contact);
+            app.Contacts.CreateEmptyContactIfNeeded().Update(1,contact);
 
 
         }
