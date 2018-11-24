@@ -15,8 +15,15 @@ namespace addressbook_web_tests.Tests
         {
             ContactData contact = new ContactData("Иван", "Иванов");
             contact.Email = "ivanov.ivan@gmail.com";
-            app.Contacts.CreateEmptyContactIfNeeded().Update(1,contact);
-
+            var oldContacts = app.Contacts.GetContactList();
+            if (oldContacts.Count == 0) oldContacts.Add(new ContactData("", ""));
+            app.Contacts.CreateEmptyContactIfNeeded().Update(0,contact);
+            var currentContacts = app.Contacts.GetContactList();
+            oldContacts[0].Lastname = contact.Lastname;
+            oldContacts[0].Firstname = contact.Firstname;
+            oldContacts.Sort();
+            currentContacts.Sort();
+            Assert.AreEqual(oldContacts, currentContacts);
 
         }
 

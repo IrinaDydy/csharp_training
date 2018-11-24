@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -44,7 +45,7 @@ namespace addressbook_web_tests
 
         public ContactHelper InitEditContact(int index)
         {
-            manager.Driver.FindElement(By.XPath("(//img[@alt='Edit'])["+ index + "]")).Click();
+            manager.Driver.FindElement(By.XPath("(//img[@alt='Edit'])["+ (index+1) + "]")).Click();
 
             return this;
         }
@@ -57,17 +58,17 @@ namespace addressbook_web_tests
 
         public ContactHelper SelectContact(int index)
         {
-            manager.Driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr["+index+"]/td/input")).Click();
+            manager.Driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr["+(index+2)+"]/td[1]/input")).Click();
             return this;
         }
 
         public ContactHelper CreateEmptyContactIfNeeded()
         {
-            if (!IsElementPresent(By.XPath("//*[@id=\"maintable\"]/tbody/tr[2]")))
+            if (!IsElementPresent(By.Name("entry")))//By.XPath("//*[@id=\"maintable\"]/tbody/tr[2]")))
             {
                 Create(new ContactData("",""));
             }
-            Assert.IsTrue(IsElementPresent(By.XPath("//*[@id=\"maintable\"]/tbody/tr[2]")));
+            //Assert.IsTrue(IsElementPresent(By.XPath("//*[@id=\"maintable\"]/tbody/tr[2]")));
             return this;
         }
 
@@ -134,6 +135,18 @@ namespace addressbook_web_tests
         {
             manager.Driver.FindElement(By.LinkText("add new")).Click();
             return this;
+        }
+
+        public List<ContactData> GetContactList()
+        {
+            List<ContactData> contact = new List<ContactData>();
+            manager.Navigator.OpenHomePage();
+            var elements = manager.Driver.FindElements(By.Name("entry"));
+            foreach (var element in elements)
+            {
+                contact.Add(new ContactData(element.FindElement(By.XPath(".//td[3]")).Text, element.FindElement(By.XPath(".//td[2]")).Text));
+            }
+            return contact;
         }
 
     }

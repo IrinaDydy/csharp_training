@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Security;
+using NUnit.Framework;
 
 namespace addressbook_web_tests
 {
@@ -12,10 +13,30 @@ namespace addressbook_web_tests
         [Test]
         public void CreateNewGroupTest()
         {
-            GroupData group = new GroupData("TestGroup");
+            GroupData group = new GroupData("Test123");
             group.Header = "Test group header";
             group.Footer = "Test group footer";
+            var oldGroups = app.Groups.GetGroupList();
             app.Groups.Create(group);
+            var currentGroups = app.Groups.GetGroupList();
+            oldGroups.Add(group);
+            oldGroups.Sort();
+            currentGroups.Sort();
+            Assert.AreEqual(oldGroups, currentGroups);
+
+        }
+
+        [Test]
+        public void CreateNewGroupTestWithBadName()
+        {
+            GroupData group = new GroupData("a'a");
+            var oldGroups = app.Groups.GetGroupList();
+            app.Groups.Create(group);
+            var currentGroups = app.Groups.GetGroupList();
+            oldGroups.Add(group);
+            oldGroups.Sort();
+            currentGroups.Sort();
+            Assert.AreEqual(oldGroups, currentGroups);
 
         }
 
@@ -23,7 +44,13 @@ namespace addressbook_web_tests
         public void CreateEmptyGroupTest()
         {
             GroupData group = new GroupData("");
+            var oldGroups = app.Groups.GetGroupList();
             app.Groups.Create(group);
+            var currentGroups = app.Groups.GetGroupList();
+            oldGroups.Add(group);
+            oldGroups.Sort();
+            currentGroups.Sort();
+            Assert.AreEqual(oldGroups, currentGroups);
 
         }
 

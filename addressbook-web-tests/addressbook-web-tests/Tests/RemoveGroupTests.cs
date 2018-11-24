@@ -8,8 +8,14 @@ namespace addressbook_web_tests
         [Test]
         public void RemoveGroupTest()
         {
-            app.Groups.CreateEmptyGroupIfNeeded().Remove(1);
-
+            var oldGroups = app.Groups.GetGroupList();
+            if (oldGroups.Count == 0) oldGroups.Add(new GroupData(""));
+            app.Groups.CreateEmptyGroupIfNeeded().Remove(0);
+            var currentGroups = app.Groups.GetGroupList();
+            oldGroups.RemoveAt(0);
+            oldGroups.Sort();
+            currentGroups.Sort();
+            Assert.AreEqual(currentGroups, oldGroups);
         }
     }
 }

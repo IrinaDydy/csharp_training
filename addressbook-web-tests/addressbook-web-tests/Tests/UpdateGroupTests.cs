@@ -11,8 +11,14 @@ namespace addressbook_web_tests.Tests
             GroupData group = new GroupData("TestGroup");
             group.Header = "Test group header";
             group.Footer = "Test group footer";
-            app.Groups.CreateEmptyGroupIfNeeded().Update(1,group);
-
+            var oldGroups = app.Groups.GetGroupList();
+            if (oldGroups.Count == 0) oldGroups.Add(new GroupData(""));
+            app.Groups.CreateEmptyGroupIfNeeded().Update(0,group);
+            var currentGroups = app.Groups.GetGroupList();
+            oldGroups[0].Name = group.Name;
+            oldGroups.Sort();
+            currentGroups.Sort();
+            Assert.AreEqual(oldGroups, currentGroups);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
 using OpenQA.Selenium;
 
 namespace addressbook_web_tests
@@ -61,7 +61,7 @@ namespace addressbook_web_tests
 
         public GroupHelper SelectGroup(int index)
         {
-            manager.Driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
+            manager.Driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index+1) + "]")).Click();
             return this;
         }
 
@@ -85,7 +85,7 @@ namespace addressbook_web_tests
             {
                 Create(new GroupData(""));
             }
-            Assert.IsTrue(IsElementPresent(By.XPath("//*[@id=\"content\"]/form/span[1]")));
+            //Assert.IsTrue(IsElementPresent(By.XPath("//*[@id=\"content\"]/form/span[1]")));
             return this;
         }
 
@@ -93,6 +93,18 @@ namespace addressbook_web_tests
         {
             manager.Driver.FindElement(By.Name("update")).Click();
             return this;
+        }
+
+        public List<GroupData> GetGroupList()
+        {
+            List<GroupData> groups = new List<GroupData>();
+            manager.Navigator.GoToGroupsPage();
+            var elements = manager.Driver.FindElements(By.CssSelector("span.group"));
+            foreach (var element in elements)
+            {
+                groups.Add(new GroupData(element.Text));
+            }
+            return groups;
         }
     }
 }
