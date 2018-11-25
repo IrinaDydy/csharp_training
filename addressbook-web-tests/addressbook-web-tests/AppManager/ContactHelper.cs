@@ -13,6 +13,7 @@ namespace addressbook_web_tests
         public ContactHelper SubmitContactCreation()
         {
             manager.Driver.FindElement(By.Name("submit")).Click();
+            contactCache = null;
             return this;
         }
 
@@ -32,6 +33,7 @@ namespace addressbook_web_tests
             SelectContact(index);
             RemoveContact();
             AcceptNextAllert(true, "^Delete 1 addresses[\\s\\S]$");
+            manager.Navigator.OpenHomePage();
             return this;
         }
 
@@ -40,6 +42,7 @@ namespace addressbook_web_tests
             InitEditContact(index);
             FillContactForm(contact);
             UpdateContact();
+            manager.Navigator.OpenHomePage();
             return this;
         }
 
@@ -53,6 +56,7 @@ namespace addressbook_web_tests
         public ContactHelper UpdateContact()
         {
             manager.Driver.FindElement(By.Name("update")).Click();
+            contactCache = null;
             return this;
         }
 
@@ -80,6 +84,7 @@ namespace addressbook_web_tests
         public ContactHelper RemoveContact()
         {
             manager.Driver.FindElement(By.XPath("//input[@value='Delete']")).Click();
+            contactCache = null;
             return this;
         }
 
@@ -137,16 +142,27 @@ namespace addressbook_web_tests
             return this;
         }
 
+        private List<ContactData> contactCache = null;
+
         public List<ContactData> GetContactList()
         {
-            List<ContactData> contact = new List<ContactData>();
-            manager.Navigator.OpenHomePage();
-            var elements = manager.Driver.FindElements(By.Name("entry"));
-            foreach (var element in elements)
+            if (contactCache == null)
             {
-                contact.Add(new ContactData(element.FindElement(By.XPath(".//td[3]")).Text, element.FindElement(By.XPath(".//td[2]")).Text));
+                contactCache = new List<ContactData>();
+                manager.Navigator.OpenHomePage();
+                var elements = manager.Driver.FindElements(By.Name("entry"));
+                foreach (var element in elements)
+                {
+                    contactCache.Add(new ContactData(element.FindElement(By.XPath(".//td[3]")).Text,
+                        element.FindElement(By.XPath(".//td[2]")).Text) {Id = element.FindElement(By.TagName("input")).GetAttribute("Id") });
+                }
+                
             }
-            return contact;
+            return contactCache;
+        }
+        public int GetContactCount()
+        {
+            return manager.Driver.FindElements(By.Name("entry")).Count;
         }
 
     }

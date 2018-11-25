@@ -41,6 +41,7 @@ namespace addressbook_web_tests
         public GroupHelper SubmitGroupCreation()
         {
             manager.Driver.FindElement(By.Name("submit")).Click();
+            groupCache = null;
             return this;
         }
 
@@ -68,6 +69,7 @@ namespace addressbook_web_tests
         public GroupHelper RemoveGroup()
         {
             manager.Driver.FindElement(By.Name("delete")).Click();
+            groupCache = null;
             return this;
         }
 
@@ -92,19 +94,36 @@ namespace addressbook_web_tests
         public GroupHelper SubmitEditGroup()
         {
             manager.Driver.FindElement(By.Name("update")).Click();
+            groupCache = null;
             return this;
         }
 
+
+        private List<GroupData> groupCache = null;
+
         public List<GroupData> GetGroupList()
         {
-            List<GroupData> groups = new List<GroupData>();
-            manager.Navigator.GoToGroupsPage();
-            var elements = manager.Driver.FindElements(By.CssSelector("span.group"));
-            foreach (var element in elements)
+            if (groupCache == null)
             {
-                groups.Add(new GroupData(element.Text));
+                groupCache = new List<GroupData>();
+                manager.Navigator.GoToGroupsPage();
+                var elements = manager.Driver.FindElements(By.CssSelector("span.group"));
+                foreach (var element in elements)
+                {
+                    GroupData group = new GroupData(element.Text)
+                    {
+                        Id = element.FindElement(By.TagName("input")).GetAttribute("value")
+                    };
+                    groupCache.Add(group);
+                }
             }
-            return groups;
+            return new List<GroupData>(groupCache);
+        }
+
+
+        public int GetGroupCount()
+        {
+            return manager.Driver.FindElements(By.CssSelector("span.group")).Count;
         }
     }
 }

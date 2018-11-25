@@ -18,6 +18,7 @@ namespace addressbook_web_tests
             group.Footer = "Test group footer";
             var oldGroups = app.Groups.GetGroupList();
             app.Groups.Create(group);
+            Assert.AreEqual(oldGroups.Count+1, app.Groups.GetGroupCount());
             var currentGroups = app.Groups.GetGroupList();
             oldGroups.Add(group);
             oldGroups.Sort();
@@ -32,6 +33,7 @@ namespace addressbook_web_tests
             GroupData group = new GroupData("a'a");
             var oldGroups = app.Groups.GetGroupList();
             app.Groups.Create(group);
+            Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
             var currentGroups = app.Groups.GetGroupList();
             oldGroups.Add(group);
             oldGroups.Sort();
@@ -46,6 +48,7 @@ namespace addressbook_web_tests
             GroupData group = new GroupData("");
             var oldGroups = app.Groups.GetGroupList();
             app.Groups.Create(group);
+            Assert.AreEqual(oldGroups.Count + 1, app.Groups.GetGroupCount());
             var currentGroups = app.Groups.GetGroupList();
             oldGroups.Add(group);
             oldGroups.Sort();

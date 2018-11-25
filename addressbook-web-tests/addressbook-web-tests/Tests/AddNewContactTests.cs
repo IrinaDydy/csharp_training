@@ -15,6 +15,7 @@ namespace addressbook_web_tests
             contact.Email = "ivanov.ivan@gmail.com";
             var oldContacts = app.Contacts.GetContactList();
             app.Contacts.Create(contact);
+            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
             var currentContacts = app.Contacts.GetContactList();
             oldContacts.Add(contact);
             oldContacts.Sort();
@@ -29,6 +30,7 @@ namespace addressbook_web_tests
 
             var oldContacts = app.Contacts.GetContactList();
             app.Contacts.Create(contact);
+            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
             var currentContacts = app.Contacts.GetContactList();
             oldContacts.Add(contact);
             oldContacts.Sort();
