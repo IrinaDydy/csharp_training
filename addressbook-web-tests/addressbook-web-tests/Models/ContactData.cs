@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 namespace addressbook_web_tests
 {
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
+        private string allPhones;
+        private string allEmails;
         public bool Equals(ContactData other)
         {
             if (object.ReferenceEquals(other, null)) return false;
@@ -53,6 +56,24 @@ namespace addressbook_web_tests
 
         public string Mobiletelephone { get; set; } = "";
 
+        public string AllPhones
+        {
+            get
+            {
+                if (allPhones != null)
+                {
+                    return allPhones;
+                }
+                else return (CleanUp(Hometelephone) + CleanUp(Mobiletelephone) + CleanUp(Worktelephone)).Trim();
+                
+            }
+            set
+            {
+                allPhones = value;
+                
+            }
+        }
+
         public string Worktelephone { get; set; } = "";
 
         public string Fax { get; set; } = "";
@@ -62,6 +83,20 @@ namespace addressbook_web_tests
         public string Email2 { get; set; } = "";
 
         public string Email3 { get; set; } = "";
+
+        public string AllEmails
+        {
+            get
+            {
+                if (allEmails != null)
+                {
+                    return allEmails;
+                }
+                return (CleanUp(Email) + CleanUp(Email2) + CleanUp(Email3)).Trim();
+
+            }
+            set { allEmails = value; }
+        }
 
         public string Homepage { get; set; } = "";
 
@@ -87,5 +122,17 @@ namespace addressbook_web_tests
 
         public string Id { get; set; }
 
+        private string CleanUp(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return "";
+            }
+            else
+            {
+                return Regex.Replace(value, "[ -()]", "")+"\r\n";
+                    //(value.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "") +"\r\n");
+            }
+        }
     }
 }

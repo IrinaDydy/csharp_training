@@ -13,6 +13,9 @@ namespace addressbook_web_tests
         {
             ContactData contact = new ContactData("Иван", "Иванов");
             contact.Email = "ivanov.ivan@gmail.com";
+            contact.Email2 = "ivanov2.ivan@gmail.com";
+            contact.Hometelephone = "123456789";
+            contact.Mobiletelephone = "987654321";
             var oldContacts = app.Contacts.GetContactList();
             app.Contacts.Create(contact);
             Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());

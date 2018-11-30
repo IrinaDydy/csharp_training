@@ -5,11 +5,13 @@ namespace addressbook_web_tests
 
     public class HelperBase
     {
+        protected IWebDriver driver;
         protected ApplicationManager manager;
 
         public HelperBase(ApplicationManager manager)
         {
             this.manager = manager;
+            this.driver = manager.Driver;
         }
 
 
@@ -17,7 +19,7 @@ namespace addressbook_web_tests
         {
             try
             {
-                manager.Driver.FindElement(by);
+                driver.FindElement(by);
                 return true;
             }
             catch (NoSuchElementException)
@@ -30,7 +32,7 @@ namespace addressbook_web_tests
         {
             try
             {
-                manager.Driver.SwitchTo().Alert();
+                driver.SwitchTo().Alert();
                 return true;
             }
             catch (NoAlertPresentException)
@@ -65,8 +67,8 @@ namespace addressbook_web_tests
         {
             if (text != null)
             {
-                manager.Driver.FindElement(locator).Clear();
-                manager.Driver.FindElement(locator).SendKeys(text);
+                driver.FindElement(locator).Clear();
+                driver.FindElement(locator).SendKeys(text);
             }
         }
 
