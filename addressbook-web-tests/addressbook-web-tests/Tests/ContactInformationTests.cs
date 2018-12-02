@@ -23,5 +23,15 @@ namespace addressbook_web_tests.Tests
             Assert.AreEqual(FromForm.AllPhones, FromTable.AllPhones);
         }
 
+        [Test]
+        public void DetailsContactInformationTest()
+        {
+            app.Contacts.CreateEmptyContactIfNeeded();
+            string FromDetailInfo = app.Contacts.GetContactDataFromDetailInfo(0);
+            ContactData FromForm = app.Contacts.GetContactDataFromForm(0);
+            Assert.AreEqual(FromForm.AllDetails, FromDetailInfo);
+
+        }
+
     }
 }

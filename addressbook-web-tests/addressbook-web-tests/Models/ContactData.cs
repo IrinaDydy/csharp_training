@@ -11,6 +11,7 @@ namespace addressbook_web_tests
     {
         private string allPhones;
         private string allEmails;
+        private string allDetails;
         public bool Equals(ContactData other)
         {
             if (object.ReferenceEquals(other, null)) return false;
@@ -64,7 +65,7 @@ namespace addressbook_web_tests
                 {
                     return allPhones;
                 }
-                else return (CleanUp(Hometelephone) + CleanUp(Mobiletelephone) + CleanUp(Worktelephone)).Trim();
+                else return (CleanUp(Hometelephone) + CleanUp(Mobiletelephone) + CleanUp(Worktelephone)+CleanUp(Phone2)).Trim();
                 
             }
             set
@@ -121,6 +122,64 @@ namespace addressbook_web_tests
         public string Nickname { get; set; } = "";
 
         public string Id { get; set; }
+
+
+        public string AllDetails
+        {
+            get
+            {
+                if (allDetails != null)
+                {
+                    return allPhones;
+                }
+                else
+                {
+                    //return (CleanUp(Hometelephone) + CleanUp(Mobiletelephone) + CleanUp(Worktelephone) + CleanUp(Phone2)).Trim();
+                    string allData = "";
+                    if (Firstname != "") allData = allData + Firstname;
+                    if (Middlename != "") allData = allData + $" {Middlename}";
+                    if (Lastname != "") allData = allData + $" {Lastname}";
+                    if (Nickname!= "") allData = allData + $"\r\n{Nickname}";
+                    if (Title != "") allData = allData + $"\r\n{Title}";
+                    if (Company != "") allData = allData + $"\r\n{Company}";
+                    if (Address != "") allData = allData + $"\r\n{Address}";
+                    if (Hometelephone != "") allData = allData + $"\r\nH: {Hometelephone}";
+                    if (Mobiletelephone != "") allData = allData + $"\r\nM: {Mobiletelephone}";
+                    if (Worktelephone != "") allData = allData + $"\r\nW: {Worktelephone}";
+                    if (Fax != "") allData = allData + $"\r\nF: {Fax}";
+                    if (Email != "") allData = allData + $"\r\n{Email}";
+                    if (Email2 != "") allData = allData + $"\r\n{Email2}";
+                    if (Email3 != "") allData = allData + $"\r\n{Email3}";
+                    if (Homepage != "") allData = allData + $"\r\nHomepage:\r\n{Homepage}";
+                    if (Bday != "" || Bmonth != "" || Byear != "")
+                    {
+                        allData = allData + "\r\nBirthday";
+                        if (Bday != "-") allData = allData + $" {Bday}.";
+                        if (Bmonth != "-") allData = allData + $" {Bmonth}";
+                        if (Byear!= "") allData= allData+ $" {Byear} ({DateTime.Now.Year - Convert.ToInt32(Byear)})";
+                    }
+
+                    if (Aday != "" || Amonth != "" || Ayear != "")
+                    {
+                        allData = allData + "\r\nAnniversary";
+                        if (Aday != "-") allData = allData + $" {Aday}.";
+                        if (Amonth != "-") allData = allData + $" {Amonth}";
+                        if (Ayear != "") allData = allData + $" {Ayear} ({DateTime.Now.Year - Convert.ToInt32(Ayear)})";
+                    }
+                    if (Address2 != "") allData = allData + $"\r\n{Address2}";
+                    if (Phone2 != "") allData = allData + $"\r\nP: {Phone2}";
+                    if (Notes != "") allData = allData + $"\r\n{Notes}";
+
+                    return allData.Trim('\r').Trim('\n');
+                }
+
+            }
+            set
+            {
+                allDetails = value;
+
+            }
+        }
 
         private string CleanUp(string value)
         {
