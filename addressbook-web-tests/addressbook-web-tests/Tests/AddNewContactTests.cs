@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
 namespace addressbook_web_tests
 {
     /// <summary>
@@ -8,28 +9,31 @@ namespace addressbook_web_tests
     public class AddNewContactTests: AuthTestBase
     {
 
-        [Test]
-        public void AddNewContactTest()
+        public static IEnumerable<ContactData> RandomContactDataProvider()
         {
-            ContactData contact = new ContactData("Иван", "Иванов");
-            contact.Email = "ivanov.ivan@gmail.com";
-            contact.Email2 = "ivanov2.ivan@gmail.com";
-            contact.Hometelephone = "123456789";
-            contact.Mobiletelephone = "987654321";
-            var oldContacts = app.Contacts.GetContactList();
-            app.Contacts.Create(contact);
-            Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
-            var currentContacts = app.Contacts.GetContactList();
-            oldContacts.Add(contact);
-            oldContacts.Sort();
-            currentContacts.Sort();
-            Assert.AreEqual(oldContacts, currentContacts);
+            List<ContactData> contacts = new List<ContactData>();
+
+            for (var i = 0; i < 5; i++)
+            {
+                contacts.Add(new ContactData(GenerateRandomString(30), GenerateRandomString(30))
+                {
+                    Middlename = GenerateRandomString(100),
+                    Address = GenerateRandomString(100),
+                    Nickname = GenerateRandomString(100),
+                    Email = GenerateRandomString(100),
+                    Title = GenerateRandomString(100),
+                    Company = GenerateRandomString(100),
+                    Hometelephone = GenerateRandomString(100),
+                    Mobiletelephone = GenerateRandomString(100)
+                });
+            }
+
+            return contacts;
         }
 
-        [Test]
-        public void AddEmptyContactTest()
+        [Test, TestCaseSource("RandomContactDataProvider")]
+        public void AddNewContactTest(ContactData contact)
         {
-            ContactData contact = new ContactData("", "");
 
             var oldContacts = app.Contacts.GetContactList();
             app.Contacts.Create(contact);
