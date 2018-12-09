@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Security;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace addressbook_web_tests
@@ -29,7 +31,12 @@ namespace addressbook_web_tests
         }
 
 
-        [Test, TestCaseSource("RandomGroupDataProvider")]
+        public static IEnumerable<GroupData> GetGroupDataFromJson()
+        {
+            return JsonConvert.DeserializeObject<List<GroupData>>(File.ReadAllText("Data\\groups.json"));
+        }
+
+        [Test, TestCaseSource("GetGroupDataFromJson")]
         public void CreateNewGroupTest(GroupData group)
         {
             var oldGroups = app.Groups.GetGroupList();
