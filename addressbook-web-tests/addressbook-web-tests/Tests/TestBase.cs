@@ -23,6 +23,8 @@ namespace addressbook_web_tests
 
         }
 
+        public bool GroupsCompareDB_UINedded = true;
+
         public static Random rnd = new Random();
 
         public static string GenerateRandomString(int max)

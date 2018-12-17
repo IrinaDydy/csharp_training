@@ -3,7 +3,7 @@
 namespace addressbook_web_tests.Tests
 {
     [TestFixture]
-    public class UpdateGroupTests: AuthTestBase
+    public class UpdateGroupTests: GroupTestBase
     {
         [Test]
         public void UpdateGroupTest()
@@ -11,12 +11,12 @@ namespace addressbook_web_tests.Tests
             GroupData group = new GroupData("TestGroup");
             group.Header = "Test group header";
             group.Footer = "Test group footer";
-            var oldGroups = app.Groups.GetGroupList();
+            var oldGroups = GroupData.GetAll();
             if (oldGroups.Count == 0) oldGroups.Add(new GroupData(""));
             GroupData oldGroup = oldGroups[0];
-            app.Groups.CreateEmptyGroupIfNeeded().Update(0,group);
+            app.Groups.CreateEmptyGroupIfNeeded().Update(oldGroup, group);
             Assert.AreEqual(oldGroups.Count, app.Groups.GetGroupCount());
-            var currentGroups = app.Groups.GetGroupList();
+            var currentGroups = GroupData.GetAll();
             oldGroups[0].Name = group.Name;
             oldGroups.Sort();
             currentGroups.Sort();

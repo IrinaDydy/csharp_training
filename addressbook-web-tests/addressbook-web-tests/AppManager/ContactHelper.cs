@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
@@ -37,9 +38,29 @@ namespace addressbook_web_tests
             return this;
         }
 
+        public ContactHelper RemoveOneContact(ContactData contact)
+        {
+
+            SelectContact(contact.Id);
+            RemoveContact();
+            AcceptNextAllert(true, "^Delete 1 addresses[\\s\\S]$");
+            Thread.Sleep(2000);
+            manager.Navigator.OpenHomePage();
+            return this;
+        }
+
         public ContactHelper Update(int index, ContactData contact)
         {
             InitEditContact(index);
+            FillContactForm(contact);
+            UpdateContact();
+            manager.Navigator.OpenHomePage();
+            return this;
+        }
+
+        public ContactHelper Update(ContactData oldcontact, ContactData contact)
+        {
+            InitEditContact(oldcontact.Id);
             FillContactForm(contact);
             UpdateContact();
             manager.Navigator.OpenHomePage();
@@ -53,11 +74,19 @@ namespace addressbook_web_tests
             return this;
         }
 
+        public ContactHelper InitEditContact(string id)
+        {
+            //driver.FindElement(By.XPath("(//img[@alt='Edit'])["+ (index+1) + "]")).Click();
+            driver.FindElement(By.XPath("//a[contains(@href, 'edit.php?id=" + id+"')]")).Click();//By.XPath("//a[contains(text(), 'long')]"
+            return this;
+        }
+
         public ContactHelper DetailInfoContact(int index)
         {
             driver.FindElements(By.Name("entry"))[index].FindElements(By.TagName("td"))[6].FindElement(By.TagName("a")).Click();
             return this;
         }
+
 
         public ContactHelper UpdateContact()
         {
@@ -69,6 +98,12 @@ namespace addressbook_web_tests
         public ContactHelper SelectContact(int index)
         {
             driver.FindElement(By.XPath("//table[@id='maintable']/tbody/tr["+(index+2)+"]/td[1]/input")).Click();
+            return this;
+        }
+
+        public ContactHelper SelectContact(string id)
+        {
+            driver.FindElement(By.Id(id)).Click();
             return this;
         }
 
@@ -168,7 +203,7 @@ namespace addressbook_web_tests
         }
         public int GetContactCount()
         {
-            return driver.FindElements(By.Name("entry")).Count;
+            return ContactData.GetAll().Count; //driver.FindElements(By.Name("entry")).Count;
         }
 
 
@@ -260,6 +295,7 @@ namespace addressbook_web_tests
             return driver.FindElement(By.Id("content")).Text.Replace("\r\n\r\n", "\r\n");
 
         }
+
 
     }
 }

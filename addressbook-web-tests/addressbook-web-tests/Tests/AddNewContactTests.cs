@@ -8,7 +8,7 @@ namespace addressbook_web_tests
     /// Summary description for AddNewContactTests
     /// </summary>
     [TestFixture]
-    public class AddNewContactTests: AuthTestBase
+    public class AddNewContactTests: ContactTestBase
     {
 
         public static IEnumerable<ContactData> RandomContactDataProvider()
@@ -42,10 +42,10 @@ namespace addressbook_web_tests
         public void AddNewContactTest(ContactData contact)
         {
 
-            var oldContacts = app.Contacts.GetContactList();
+            var oldContacts = ContactData.GetAll();
             app.Contacts.Create(contact);
             Assert.AreEqual(oldContacts.Count + 1, app.Contacts.GetContactCount());
-            var currentContacts = app.Contacts.GetContactList();
+            var currentContacts = ContactData.GetAll();
             oldContacts.Add(contact);
             oldContacts.Sort();
             currentContacts.Sort();
