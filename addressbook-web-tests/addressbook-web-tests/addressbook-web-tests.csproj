@@ -104,6 +104,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Models\GroupContactRelation.cs" />
+    <Compile Include="Tests\AddContactToGroupTests.cs" />
     <Compile Include="Tests\ContactTestBase.cs" />
     <Compile Include="Models\AccountData.cs" />
     <Compile Include="Models\AddressBookDB.cs" />
