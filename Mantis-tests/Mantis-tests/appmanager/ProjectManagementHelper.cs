@@ -80,7 +80,6 @@ namespace mantis_tests
                 projects.Add(new ProjectData(name, description));
             }
             return projects;
-        }
-
+        }       
     }
 }

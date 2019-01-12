@@ -29,6 +29,7 @@ namespace mantis_tests
             navigation = new NavigationHelper(this, baseURL);
             login = new LoginHelper(this);
             project = new ProjectManagementHelper(this);
+            API = new APIHelper(this);
         }
 
 
@@ -37,7 +38,8 @@ namespace mantis_tests
 
         public NavigationHelper Navigation => navigation; 
         public LoginHelper Login => login; 
-        public ProjectManagementHelper Project => project; 
+        public ProjectManagementHelper Project => project;
+        public APIHelper API { get; private set; }
 
         public void Stop()
         {
